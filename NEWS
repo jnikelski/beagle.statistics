@@ -1,0 +1,70 @@
+New in Version 1.0
+======================
+* package renamed from lorisStatistics
+
+New in Version 0.7.6
+======================
+* modified selected logging functions to accept settings being passed as an argument
+* created "read_loris_aggregated_settings" to read the new aggregated settings file (in JSON)
+
+New in Version 0.7.5
+======================
+* added new functions to implement the new centralized Loris logging functionality
+
+New in Version 0.7.0
+======================
+* many changes related to implementation of multiple reference tissues
+
+New in Version 0.6.3
+======================
+* changed rminc2 package name (rminc2 --> rmincIO)
+
+New in Version 0.6.2
+======================
+* modified function vbm_quantify_by_roi.R to compute 
+  average (mean/median) z-scores by ROI. I also
+  removed some superfluous volume reads.
+
+New in Version 0.6.1
+======================
+* added function vbm_quantify_by_roi.R for VBM quantification
+
+New in Version 0.6.0
+======================
+* changed rminc version (RMINC --> rminc2)
+
+New in Version 0.5.2
+======================
+* modified mincIO.readVolume functions calls to explicitly use the
+  "volumeType" argument for functional, label, and mask volumes
+
+New in Version 0.5.1
+======================
+* changed label read function to read the new label csv file, 
+  extended by 1 column (secondary_label).  The secondary label
+  column is set to 1, IFF the label redefines an area that has
+  already been defined using another label.
+     We need to know whether multiple labels are labelling the same
+  region because, in such a case, totalling all ROI volumes would
+  over-estimate total volume.  With this column, we can get an
+  accurate estimate of total labelled volume by not including
+  the multiply labelled areas multiple times.
+
+New in Version 0.5
+======================
+* package name changed from ldiPibStatistics to lorisStatistics
+  in recognition of the multi-modal nature of the processing
+  and the inter-dependency of the package on the Loris
+  pipeline
+* version number has been shot up in recognition that we're
+  using this package in production. 
+
+New in Version 0.2
+======================
+* changed all calls to mincIO functions to use the new 
+  mincIO.* naming convention.
+
+New in Version 0.1
+======================
+* new code placed into a package for the first time.
+* tested the bazaar commit mechanism
