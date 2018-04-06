@@ -1,4 +1,4 @@
-vbm_quantify_by_roi <- function(vbmVolname, lblVolname, labels_table, thresholds.v) {
+vbm_quantify_by_roi <- function(vbmVolname, opt, lblVolname, labels_table, thresholds.v) {
    # ==============================================================================
    # Function: vbm_quantify_by_roi
    # Purpose:
@@ -51,7 +51,7 @@ vbm_quantify_by_roi <- function(vbmVolname, lblVolname, labels_table, thresholds
             labels_table$LabelName[lbl_ndx]))
             
       # compute the number of voxels (i.e., volume) for this ROI
-      roiMasked_lblVol <- volume.explodeLabelVolume(lblVol, labels=c(roi), civetLabels=FALSE)[[1]]
+      roiMasked_lblVol <- volume.explodeLabelVolume(lblVol, opt, labels=c(roi), civetLabels=FALSE)[[1]]
 
       # in the case that the label volume does not contain an ROI that
       # exists in the .csv file, set both fields to NA

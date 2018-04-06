@@ -64,7 +64,7 @@ compute_ref_tissue_auc <- function(pkt) {
    ylim_max <- round(max(max(avg_refValues_byFrame.v),100))
    refAUCplot <- xyplot(avg_refValues_byFrame.v ~ mid_frame_times.v/60, valueAUC=refAuc,
       main = "Average Reference Tissue PiB Activity Over Time",
-      sub = sprintf("Subject: %s", pkt$pib_scanId),
+      sub = sprintf("Subject: %s", pkt$pibAucPlotSubtitle),
       xlab = "Mid-Frame Times Relative to Acquisition Start (in minutes)",
       ylab = "PiB Intensity",
       ylim = c(ylim_min,ylim_max),
