@@ -1,3 +1,7 @@
+New in Version 1.2
+======================
+* added the *opt* argument to a few functions, in addition to some extra debugging code.
+
 New in Version 1.0
 ======================
 * package renamed from lorisStatistics
