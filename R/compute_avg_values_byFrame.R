@@ -6,16 +6,28 @@
 #    no_of_frames.
 #
 # ==============================================================================
-compute_avg_values_byFrame <- function(dynamicVolname4D, maskVolname=null) {
+compute_avg_values_byFrame <- function(dynamicVolname4D, opt, maskVolname=null) {
+   if ( opt$debug )  {cat(sprintf("\n%s -- compute_avg_values_byFrame() -- Start\n\n", date()))}
+
+   if ( opt$debug )  {
+      cat(sprintf("compute_avg_values_byFrame: dynamic volume: %s \n", dynamicVolname4D))   
+      cat(sprintf("compute_avg_values_byFrame: reference tissue mask volume: %s\n", maskVolname))
+   }
 
    # read in mask
    stopifnot( !is.null(maskVolname) )
    maskVol <- mincIO.readVolume(maskVolname, volumeType="mask")
+   if ( opt$debug )  {
+   cat(sprintf("compute_avg_values_byFrame: reference tissue mask volume header info ---\n"))
    print(maskVol)
-   
+   }
+
    # read in dynamic 4D volume header to get some meta-data
    dynVol <- mincIO.readMincInfo(dynamicVolname4D)
-   print(dynVol)
+   if ( opt$debug )  {
+      cat(sprintf("compute_avg_values_byFrame: dynamic volume header info ---\n"))
+      print(dynVol)
+   }
    frameStart <- 1
    frameStop <- mincIO.getProperty(dynVol, "nFrames")
    nFramesToProcess <- frameStop - frameStart +1
@@ -25,7 +37,6 @@ compute_avg_values_byFrame <- function(dynamicVolname4D, maskVolname=null) {
    
    # loop over all frames in the dynamic volume
    pbar <- txtProgressBar(min=frameStart, max=frameStop, initial=frameStart, style=1, width=80)
-   cat(sprintf("compute_avg_values_byFrame -- \n...dynamic volume: %s \n...mask volume: %s\n", dynamicVolname4D, maskVolname))   
    #
    for ( frameNo in frameStart:frameStop ) {
       #
@@ -47,5 +58,6 @@ compute_avg_values_byFrame <- function(dynamicVolname4D, maskVolname=null) {
    close(pbar)
    
    # return vector
+   if ( opt$debug )  {cat(sprintf("%s -- compute_avg_values_byFrame() -- Exit\n\n", date()))}
    return(avg_values_byFrame.v)
 }
