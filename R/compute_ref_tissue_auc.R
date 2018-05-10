@@ -20,8 +20,9 @@
 #  4. return: AUC scalar, AUC vector, pretty plot
 #
 # ==============================================================================
-compute_ref_tissue_auc <- function(pkt) {
-   cat("Computing PiB reference tissue AUC values for subject: ", pkt$keyname, "\n\n")
+compute_ref_tissue_auc <- function(pkt, opt) {
+   if ( opt$debug )  {cat(sprintf("\n%s -- compute_ref_tissue_auc() -- Start\n\n", date()))}
+   if ( opt$verbose ) {cat("Computing PiB reference tissue AUC values for subject: ", pkt$keyname, "\n\n")}
 
    # function to compute AUC  (thanks to Frank E Harrell from the R lists)
    trap.rule <- function(y,x) sum(diff(x)*(y[-1]+y[-length(y)]))/2
@@ -29,9 +30,11 @@ compute_ref_tissue_auc <- function(pkt) {
 
    # compute the average reference activity across all frames
    returnList <- list()
-   avg_refValues_byFrame.v <- compute_avg_values_byFrame(pkt$pib_4d_vol, pkt$refTissue_volname_fullPath)
-   cat("Average reference tissue activity across all frames:\n")
-   print(avg_refValues_byFrame.v)
+   avg_refValues_byFrame.v <- compute_avg_values_byFrame(pkt$pib_4d_vol, opt, pkt$refTissue_volname_fullPath)
+    if ( opt$debug ) {
+        cat("\nAverage reference tissue activity for all frames:\n")
+        print(avg_refValues_byFrame.v)
+    }
    returnList$avg_refValues_byFrame.v <- avg_refValues_byFrame.v
    
    
@@ -40,8 +43,10 @@ compute_ref_tissue_auc <- function(pkt) {
    #        mid-frame times = time at the middle of each frame
    pibVol <- mincIO.readMincInfo(pkt$pib_4d_vol)
    mid_frame_times.v <- mincIO.getProperty(pibVol, "timeOffsets") + (mincIO.getProperty(pibVol, "timeWidths")/2)
-   cat("Mid-frame times across all frames:\n")
-   print(mid_frame_times.v)
+   if ( opt$debug ) {
+      cat("\nMid-frame times for all frames:\n")
+      print(mid_frame_times.v)
+   }
    returnList$mid_frame_times.v <- mid_frame_times.v
    
    
@@ -51,8 +56,9 @@ compute_ref_tissue_auc <- function(pkt) {
    mid_frame_timesX.v <- mid_frame_times.v[pkt$frameStart:pkt$frameStop]
    #
    refAuc <- trap.rule(avg_refValues_byFrameX.v, mid_frame_timesX.v)
-   cat("Reference tissue area under the curve (AUC):\n")
-   print(refAuc)
+   if ( opt$verbose )  {
+      cat(sprintf("\nReference tissue area under the curve (AUC): %f\n", refAuc))
+   }
    returnList$refAuc <- refAuc
    
    
@@ -80,7 +86,8 @@ compute_ref_tissue_auc <- function(pkt) {
       })
    #
    returnList$refAUCplot <- refAUCplot
-   return(returnList)
+   if ( opt$debug )  {cat(sprintf("%s -- compute_ref_tissue_auc() -- Exit\n\n", date()))}
+return(returnList)
 }
 
 
